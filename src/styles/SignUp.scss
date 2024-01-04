@@ -1,0 +1,76 @@
+$primaryColor: #3498db;
+$marginBetweenInputs: 15px;
+
+.SignUp {
+  text-align: center;
+  margin-top: 50px;
+
+  h2 {
+    color: $primaryColor;
+  }
+
+  form {
+    max-width: 400px;
+    margin: 0 auto;
+
+    .input-container {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: $marginBetweenInputs;
+
+      .input-row {
+        position: relative;
+        margin-bottom: 5px; // 각 입력 필드 사이의 간격 조정
+
+        label {
+          
+          font-weight: bold;
+          white-space: nowrap; // 라벨이 길어져도 줄바꿈 방지
+          position: absolute;
+          left: -80px; // 라벨의 왼쪽 위치 조정
+          top: 50%; // 라벨을 수직 중앙에 위치시킴
+          transform: translateY(-50%); // 라벨을 수직 중앙에 위치시킴
+        }
+
+        input {
+          width: calc(100% - 10px); // 라벨이 차지하는 공간만큼 감소
+          padding: 10px;
+          box-sizing: border-box;
+          border: 1px solid $primaryColor;
+          border-radius: 5px;
+          margin-top: 5px; // 입력 필드 위의 간격 조정
+          font-size: inherit; // input의 글꼴 크기를 상속 받음
+          margin-left: 5px; // 라벨과 입력창 사이의 간격 조정
+        }
+      }
+    }
+
+    button {
+        background-color: $primaryColor;
+        color: white;
+        padding: 12px;
+        cursor: pointer;
+        border: none;
+        border-radius: 5px;
+        margin-top: 10px; // 가입하기 버튼 위의 간격 조정
+        width: 100%; // 가입하기 버튼의 폭을 100%로 설정
+        transition: background-color 0.3s; // 호버 시 색상 전환 효과
+  
+        &:hover {
+          background-color: darken($primaryColor, 10%); // 호버 시 색상 어둡게
+        }
+  
+        &:active {
+          background-color: darken($primaryColor, 20%); // 클릭 시 색상 더 어둡게
+        }
+      }
+  }
+}
+
+@media screen and (max-width: 600px) {
+    .SignUp form {
+      max-width: 60%;
+    }
+   
+
+  }
