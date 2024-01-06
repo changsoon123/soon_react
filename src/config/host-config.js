@@ -15,3 +15,4 @@ export const API_BASE_URL = backEndHostName;
 export const TODO = '/api/todos';
 export const USER = '/api/signup';
 export const LoginUser = '/api/login';
+export const CheckField = '/api/check';

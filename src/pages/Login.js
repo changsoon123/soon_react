@@ -39,7 +39,7 @@ function Login() {
       <form>
         <div className="input-container">
           <div className="input-row">
-            <label htmlFor="login-username">이름:</label>
+            <label htmlFor="login-username">아이디:</label>
             <input
               type="text"
               id="login-username"
