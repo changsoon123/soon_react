@@ -2,21 +2,23 @@ import React, { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 import '../styles/SignUp.scss';
 import { API_BASE_URL as BASE, USER, CheckField } from '../config/host-config';
 
 function SignUp() {
   const API_BASE_URL = BASE + USER;
   const API_CHECK_BASE_URL = BASE + CheckField;
-
+  const navigate = useNavigate();
 
   const validationSchema = yup.object().shape({
     username: yup.string()
       .required('아이디를 입력하세요.')
-      .matches(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{5,}$/, '아이디는 최소 5자 이상이어야 합니다. 영어, 숫자를 조합하세요.'),
+      .matches(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{5,}$/, '아이디는 최소 5자 이상이어야 합니다.\n영어, 숫자를 조합하세요.'),
     password: yup.string()
       .required('비밀번호를 입력하세요.')
-      .matches(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/, '비밀번호는 최소 8자 이상이어야 합니다. 영어, 숫자를 조합하세요.'),
+      .matches(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/, '비밀번호는 최소 8자 이상이어야 합니다.\n영어, 숫자를 조합하세요.'),
     email: yup.string()
       .required('이메일을 입력하세요.')
       .matches(/^[a-zA-Z0-9_+&*-]+(?:\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,7}$/, '올바른 이메일 주소를 입력하세요.'),
@@ -37,6 +39,7 @@ function SignUp() {
   const [isEmailAvailable, setIsEmailAvailable] = useState(true);
   const [isPhoneNumberAvailable, setIsPhoneNumberAvailable] = useState(true);
   const [isNicknameAvailable, setIsNicknameAvailable] = useState(true);
+  
   
   
 
@@ -102,6 +105,16 @@ function SignUp() {
       if (response.ok) {
         // 회원가입 성공
         console.log('회원가입 성공');
+        Swal.fire({
+          icon: 'success',
+          title: '회원가입 성공',
+          text: '회원가입이 성공했습니다.',
+      }).then((result) => {
+          // SweetAlert 확인 버튼 클릭 시 실행할 코드
+          if (result.isConfirmed) {
+              navigate('/Login');
+          }
+      });
       } else {
         // 회원가입 실패
         console.log(response)
@@ -129,20 +142,24 @@ function SignUp() {
                   <input
                     type="text"
                     id="username"
-                    placeholder="영문과 숫자를 조합하여 5자 이상"
+                    placeholder="영문과 숫자를 조합하여 5자 이상 입력하세요."
                     {...field}
                     onBlur={(e) => handleBlur('username', e.target.value)}
-                    onChange={(e) => {
+                    onInput={(e) => {
                       const fieldValue = e.target.value;
                       field.onChange(e.target.value);
                       setValue('username', e.target.value, { shouldValidate: true });
                       if (fieldValue.trim() !== '') {
                         checkAvailability('username', fieldValue, setIsUsernameAvailable);
+                      } else {
+                        // 추가: 빈 문자열이면 중복 메시지를 숨김
+                        setIsUsernameAvailable(true);
                       }
                     }}
+                    maxLength={12}
                   />
-                  {errors.username && <span className="error-message">{errors.username.message}</span>}
-                  {!isUsernameAvailable && <span className="error-message">이미 사용 중인 아이디입니다.</span>}
+                  {errors.username && <div className="error-message">{errors.username.message}</div>}
+                  {!isUsernameAvailable && <div className="error-message">이미 사용 중인 아이디입니다.</div>}
                 </>
               )}
             />
@@ -158,14 +175,15 @@ function SignUp() {
                   <input
                     type="password"
                     id="password"
-                    placeholder="영문과 숫자를 조합하여 8자 이상"
+                    placeholder="영문과 숫자를 조합하여 8자 이상 입력하세요."
                     {...field}
                     onChange={(e) => {
                       field.onChange(e.target.value);
                       setValue('password', e.target.value, { shouldValidate: true });
                     }}
+                    maxLength={20}
                   />
-                  {errors.password && <span className="error-message">{errors.password.message}</span>}
+                  {errors.password && <div className="error-message">{errors.password.message}</div>}
                 </>
               )}
             />
@@ -189,12 +207,16 @@ function SignUp() {
                       field.onChange(e.target.value);
                       setValue('email', e.target.value, { shouldValidate: true });
                       if (fieldValue.trim() !== '') {
-                        checkAvailability('email', fieldValue, setIsUsernameAvailable);
+                        checkAvailability('email', fieldValue, setIsEmailAvailable);
+                      } else {
+                        // 추가: 빈 문자열이면 중복 메시지를 숨김
+                        setIsEmailAvailable(true);
                       }
                     }}
+                    maxLength={25}
                   />
-                  {errors.email && <span className="error-message">{errors.email.message}</span>}
-                  {!isEmailAvailable && <span className="error-message">이미 사용 중인 이메일입니다.</span>}
+                  {errors.email && <div className="error-message">{errors.email.message}</div>}
+                  {!isEmailAvailable && <div className="error-message">이미 사용 중인 이메일입니다.</div>}
                 </>
               )}
             />
@@ -218,12 +240,15 @@ function SignUp() {
                       field.onChange(e.target.value);
                       setValue('phoneNumber', e.target.value, { shouldValidate: true });
                       if (fieldValue.trim() !== '') {
-                        checkAvailability('phoneNumber', fieldValue, setIsUsernameAvailable);
+                        checkAvailability('phoneNumber', fieldValue, setIsPhoneNumberAvailable);
+                      } else {
+                        setIsPhoneNumberAvailable(true);
                       }
                     }}
+                    maxLength={13}
                   />
-                  {errors.phoneNumber && <span className="error-message">{errors.phoneNumber.message}</span>}
-                  {!isPhoneNumberAvailable && <span className="error-message">이미 사용 중인 전화번호입니다.</span>}
+                  {errors.phoneNumber && <div className="error-message">{errors.phoneNumber.message}</div>}
+                  {!isPhoneNumberAvailable && <div className="error-message">이미 사용 중인 전화번호입니다.</div>}
                 </>
               )}
             />
@@ -239,7 +264,7 @@ function SignUp() {
                   <input
                     type="text"
                     id="nickname"
-                    placeholder="영문, 숫자, 한글 2자 이상"
+                    placeholder="영문, 숫자, 한글 2자 이상 입력하세요."
                     {...field}
                     onBlur={(e) => handleBlur('nickname', e.target.value)}
                     onChange={(e) => {
@@ -247,12 +272,15 @@ function SignUp() {
                       field.onChange(e.target.value);
                       setValue('nickname', e.target.value, { shouldValidate: true });
                       if (fieldValue.trim() !== '') {
-                        checkAvailability('nickname', fieldValue, setIsUsernameAvailable);
+                        checkAvailability('nickname', fieldValue, setIsNicknameAvailable);
+                      } else {
+                        setIsNicknameAvailable(true);
                       }
                     }}
+                    maxLength={10}
                   />
-                  {errors.nickname && <span className="error-message">{errors.nickname.message}</span>}
-                  {!isNicknameAvailable && <span className="error-message">이미 사용 중인 닉네임입니다.</span>}
+                  {errors.nickname && <div className="error-message">{errors.nickname.message}</div>}
+                  {!isNicknameAvailable && <div className="error-message">이미 사용 중인 닉네임입니다.</div>}
                 </>
               )}
             />

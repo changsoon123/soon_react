@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../styles/Login.scss';
 import {API_BASE_URL as BASE, LoginUser} from '../config/host-config'
+import { useAuth } from '../contexts/AuthContext'; 
 
 function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const API_BASE_URL = BASE + LoginUser;
+
+  const { login } = useAuth();
+  const navigate = useNavigate();
 
   const handleLogin = async () => {
     
@@ -22,14 +27,30 @@ function Login() {
       });
 
       if (response.ok) {
+        const responseData = await response.json();
+
+        // 서버로부터 받은 토큰을 추출
+        const token = responseData.token;
+
+        sessionStorage.setItem('token', token);
+
         // 로그인 성공
         console.log('로그인 성공');
+        login();
+        navigate('/');
       } else {
         // 로그인 실패
         console.log('로그인 실패');
       }
     } catch (error) {
       console.error('로그인 요청 에러', error);
+    }
+  };
+
+  const handleKeyPress = (e) => {
+    // 엔터 키를 누를 때만 로그인 처리
+    if (e.key === 'Enter') {
+      handleLogin();
     }
   };
 
@@ -45,6 +66,7 @@ function Login() {
               id="login-username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
+              onKeyPress={handleKeyPress}
             />
           </div>
           <div className="input-row">
@@ -54,6 +76,7 @@ function Login() {
               id="login-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              onKeyPress={handleKeyPress}
             />
           </div>
         </div>

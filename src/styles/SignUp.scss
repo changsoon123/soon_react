@@ -1,5 +1,5 @@
 $primaryColor: #3498db;
-$marginBetweenInputs: 15px;
+$marginBetweenInputs: 20px; // 간격을 더 벌리도록 조정
 
 .SignUp {
   text-align: center;
@@ -7,6 +7,7 @@ $marginBetweenInputs: 15px;
 
   h2 {
     color: $primaryColor;
+    margin-bottom: 30px; // 제목과 아래 간격을 늘림
   }
 
   form {
@@ -16,54 +17,64 @@ $marginBetweenInputs: 15px;
     .input-container {
       display: flex;
       flex-direction: column;
-      margin-bottom: $marginBetweenInputs;
+      // margin-bottom: 10px;
 
       .input-row {
+        height: 70px;
         position: relative;
-        margin-bottom: 5px; // 각 입력 필드 사이의 간격 조정
-
+        margin-bottom: 40px; // 입력 필드 간의 간격을 조정
+        
         label {
-          
           font-weight: bold;
-          white-space: nowrap; // 라벨이 길어져도 줄바꿈 방지
+          white-space: nowrap;
           position: absolute;
-          left: -80px; // 라벨의 왼쪽 위치 조정
-          top: 50%; // 라벨을 수직 중앙에 위치시킴
-          transform: translateY(-50%); // 라벨을 수직 중앙에 위치시킴
+          left: -80px;
+          top: 50%;
+          transform: translateY(-50%);
         }
 
         input {
-          width: calc(100% - 10px); // 라벨이 차지하는 공간만큼 감소
-          padding: 10px;
+          width: 100%; // 라벨 영향 받지 않도록 100%로 변경
+          padding: 12px; // 패딩을 늘려 더 큰 입력 필드로 보이도록 함
           box-sizing: border-box;
           border: 1px solid $primaryColor;
-          border-radius: 5px;
-          margin-top: 5px; // 입력 필드 위의 간격 조정
-          font-size: inherit; // input의 글꼴 크기를 상속 받음
-          margin-left: 5px; // 라벨과 입력창 사이의 간격 조정
+          border-radius: 8px; // 더 둥글게 조정
+          margin-top: 8px; // 입력 필드 위의 간격을 줄임
+          font-size: inherit;
         }
+
+        .error-message {
+          // 추가: 에러 메시지 스타일
+          color: #e74c3c; // 빨간색
+          font-size: 15px;
+          margin-top: 8px;
+          white-space: pre-wrap;
+ 
+        }
+
       }
+      
     }
 
     button {
-        background-color: $primaryColor;
-        color: white;
-        padding: 12px;
-        cursor: pointer;
-        border: none;
-        border-radius: 5px;
-        margin-top: 10px; // 가입하기 버튼 위의 간격 조정
-        width: 100%; // 가입하기 버튼의 폭을 100%로 설정
-        transition: background-color 0.3s; // 호버 시 색상 전환 효과
-  
-        &:hover {
-          background-color: darken($primaryColor, 10%); // 호버 시 색상 어둡게
-        }
-  
-        &:active {
-          background-color: darken($primaryColor, 20%); // 클릭 시 색상 더 어둡게
-        }
+      background-color: $primaryColor;
+      color: white;
+      padding: 14px; // 더 큰 패딩으로 버튼 크기를 키움
+      cursor: pointer;
+      border: none;
+      border-radius: 8px;
+      margin-top: 20px; // 버튼 위의 간격을 조정
+      width: 100%;
+      transition: background-color 0.3s;
+
+      &:hover {
+        background-color: darken($primaryColor, 10%);
       }
+
+      &:active {
+        background-color: darken($primaryColor, 20%);
+      }
+    }
   }
 }
 

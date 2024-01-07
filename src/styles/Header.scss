@@ -1,28 +1,38 @@
 header {
-    background-color: #333; // 헤더 배경색 설정
-    padding: 10px; // 헤더 안쪽 여백 설정
-  
-    nav {
-      ul {
-        list-style: none; // 리스트 스타일 제거
-        display: flex; // Flexbox 사용
-        justify-content: space-between; // 각 항목을 좌우로 정렬
-        align-items: center; // 세로 중앙 정렬
-        padding: 0; // 리스트 안쪽 여백 제거
-  
-        li {
-          margin: 0 10px; // 각 메뉴 아이템 사이의 간격 설정
-  
-          a {
-            text-decoration: none; // 링크에 밑줄 제거
-            color: white; // 링크 텍스트 색상 설정
-            font-weight: bold; // 링크 텍스트 굵게 설정
-  
-            &:hover {
-              color: #61dafb; // 호버 시 텍스트 색상 변경
-            }
+  background-color: #333;
+  padding: 10px;
+
+  nav {
+    ul {
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0;
+
+      li {
+        margin: 0 10px;
+
+        a, button {
+          text-decoration: none;
+          color: white;
+          font-weight: bold;
+
+          &:hover {
+            color: #61dafb;
           }
         }
       }
+
+      .login-logout button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        font-weight: bold;
+        font: inherit;
+        color: white;
+      }
     }
   }
+}
