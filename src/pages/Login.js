@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/Login.scss';
 import {API_BASE_URL as BASE, LoginUser} from '../config/host-config'
+import KakaoLoginButton from '../components/KakaoLoginButton';
 import { useAuth } from '../contexts/AuthContext'; 
 
 function Login() {
@@ -47,13 +48,6 @@ function Login() {
     }
   };
 
-  const handleKeyPress = (e) => {
-    // 엔터 키를 누를 때만 로그인 처리
-    if (e.key === 'Enter') {
-      handleLogin();
-    }
-  };
-
   return (
     <div className="Login">
       <h2>로그인</h2>
@@ -65,8 +59,7 @@ function Login() {
               type="text"
               id="login-username"
               value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              onKeyPress={handleKeyPress}
+              onChange={(e) => setUsername(e.target.value)}      
             />
           </div>
           <div className="input-row">
@@ -76,7 +69,6 @@ function Login() {
               id="login-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              onKeyPress={handleKeyPress}
             />
           </div>
         </div>
@@ -84,6 +76,7 @@ function Login() {
           로그인
         </button>
       </form>
+      <KakaoLoginButton />
     </div>
   );
 }

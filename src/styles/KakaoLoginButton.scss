@@ -1,0 +1,23 @@
+@import 'normalize.css';
+
+.custom-kakao-button {
+    
+    border: none;
+    cursor: pointer;
+    margin-top: 20px;
+    border: none !important;
+    border-radius: 20px !important;
+
+    &:hover {
+        .kakao-login-icon {
+          filter: brightness(1.2); /* 호버 시 이미지 밝기 조절 (예: 1.2배) */
+        }
+      }
+}
+
+
+.kakao-login-icon {
+    width: 100%; /* 이미지의 너비를 부모 요소인 .custom-kakao-button에 맞춤 */
+    // height: auto; /* 이미지의 높이 자동으로 조절 */
+    transition: filter 0.3s ease;
+}
