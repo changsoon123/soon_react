@@ -18,33 +18,25 @@ const KakaoLoginButton = () => {
 
   const responseKaKao = async (result) => {
     try {
-      // 클라이언트에서 받은 카카오 코드
-      console.log(result);
 
-      console.log(result.profile.id);
-      console.log(result.profile.properties.nickname);
-
-      const code = result.code;
-
-      console.log(code);
-  
-      // 서버로 전송할 데이터
-      const queryString = `?code=${code}`;
+      sessionStorage.setItem(result.response.access_token);
   
       // 서버로 데이터 전송
-      const response = await fetch(API_BASE_URL + queryString , {
-        method: 'GET',  
-        
+      const response = await fetch(API_BASE_URL ,{
+        method: 'POST', // 수정: GET에서 POST로 변경
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId: result.profile.id,
+          nickname: result.profile.properties.nickname,
+        }),
       });
   
       if (response.ok) {
         const userData = await response.json();
         console.log('백엔드 응답:', userData);
-  
-        const token = userData.token;
-  
-        sessionStorage.setItem('accesstoken', token);
-  
+
         // 여기에서 필요한 처리를 수행하세요.
         login();
         navigate('/');

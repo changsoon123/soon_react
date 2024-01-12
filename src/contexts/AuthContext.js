@@ -1,11 +1,15 @@
 import React, { createContext, useContext, useState } from 'react';
 import {API_BASE_URL as BASE, KakaoLogout} from '../config/host-config'
+import { useNavigate } from 'react-router-dom';
 
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
+
   const API_BASE_URL = BASE + KakaoLogout;
+
+  const navigate = useNavigate();
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -35,6 +39,7 @@ export const AuthProvider = ({ children }) => {
         logout();
         // 서버 측 로그아웃 요청
         await handleServerLogout();
+        navigate('/');
       } else {
         console.error('카카오 로그아웃 실패', response.status);
       }
