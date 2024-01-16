@@ -1,13 +1,10 @@
 import React, { createContext, useContext, useState } from 'react';
-import {API_BASE_URL as BASE, KakaoLogout} from '../config/host-config'
 import { useNavigate } from 'react-router-dom';
 
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-
-  const API_BASE_URL = BASE + KakaoLogout;
 
   const navigate = useNavigate();
 
@@ -37,8 +34,6 @@ export const AuthProvider = ({ children }) => {
         console.log('카카오 로그아웃 성공');
         sessionStorage.removeItem('accesstoken');
         logout();
-        // 서버 측 로그아웃 요청
-        await handleServerLogout();
         navigate('/');
       } else {
         console.error('카카오 로그아웃 실패', response.status);
@@ -48,24 +43,6 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const handleServerLogout = async () => {
-    try {
-      const response = await fetch(API_BASE_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      if (response.ok) {
-        console.log('서버 로그아웃 성공');
-      } else {
-        console.error('서버 로그아웃 실패', response.status);
-      }
-    } catch (error) {
-      console.error('서버 로그아웃 에러', error);
-    }
-  };
 
   return (
     <AuthContext.Provider value={{ isLoggedIn, login, logout, kakaoLogout}}>

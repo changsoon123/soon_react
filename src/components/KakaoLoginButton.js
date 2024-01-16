@@ -17,9 +17,8 @@ const KakaoLoginButton = () => {
   const KAKAO_API_KEY = process.env.REACT_APP_KAKAO_API_KEY;
 
   const responseKaKao = async (result) => {
+    
     try {
-
-      sessionStorage.setItem(result.response.access_token);
   
       // 서버로 데이터 전송
       const response = await fetch(API_BASE_URL ,{
@@ -36,7 +35,8 @@ const KakaoLoginButton = () => {
       if (response.ok) {
         const userData = await response.json();
         console.log('백엔드 응답:', userData);
-
+        const token = userData.token;
+        sessionStorage.setItem('token', token);
         // 여기에서 필요한 처리를 수행하세요.
         login();
         navigate('/');

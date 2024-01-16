@@ -15,6 +15,5 @@ export const API_BASE_URL = backEndHostName;
 export const TODO = '/api/todos';
 export const USER = '/api/signup';
 export const LoginUser = '/api/login';
-export const KakaoLoginUser = '/api/login/kakao/callback';
-export const KakaoLogout = '/api/logout/kakao';
+export const KakaoLoginUser = '/api/kakao/login';
 export const CheckField = '/api/check';
