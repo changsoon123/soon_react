@@ -37,7 +37,7 @@ const KakaoLoginButton = () => {
         console.log('백엔드 응답:', userData);
         const token = userData.token;
         sessionStorage.setItem('token', token);
-        // 여기에서 필요한 처리를 수행하세요.
+
         login();
         navigate('/');
       } else {
@@ -59,7 +59,7 @@ const KakaoLoginButton = () => {
     >
       <img
         className="kakao-login-icon"
-        src="/kakao-login-button.jpg" // 이미지의 경로를 public 폴더를 기준으로 설정
+        src="/kakao-login-button.jpg" 
         alt="Kakao Login"
       />
     </KakaoLogin>
