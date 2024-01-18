@@ -17,3 +17,5 @@ export const USER = '/api/signup';
 export const LoginUser = '/api/login';
 export const KakaoLoginUser = '/api/kakao/login';
 export const CheckField = '/api/check';
+export const CboardBoards = '/cboard/boards';
+export const CboardBoard = '/cboard/board';

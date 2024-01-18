@@ -17,6 +17,9 @@ function Header() {
             <Link to="/about">About</Link>
           </li>
           <li>
+            <Link to="/board">Board</Link>
+          </li>
+          <li>
             <Link to="/signup">Sign Up</Link>
           </li>
           <li className="login-logout">
