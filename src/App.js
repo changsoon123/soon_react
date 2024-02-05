@@ -4,6 +4,7 @@ import { AuthProvider } from './contexts/AuthContext';
 import Header from './components/Header';
 import HomePage from './pages/HomePage';
 import AboutPage from './pages/AboutPage';
+import BoardPage from './pages/BoardPage';
 import SignUp from './pages/SignUp';
 import Login from './pages/Login';
 import './App.scss';
