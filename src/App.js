@@ -7,6 +7,7 @@ import AboutPage from './pages/AboutPage';
 import BoardPage from './pages/BoardPage';
 import SignUp from './pages/SignUp';
 import Login from './pages/Login';
+import CreateBoardPage from './pages/CreateBoardPage';
 import './App.scss';
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
         <Route path="/board" element={<BoardPage />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/create" element={<CreateBoardPage />} />
       </Routes>
       </AuthProvider>
     </Router>

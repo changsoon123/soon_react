@@ -48,10 +48,19 @@ function Login() {
     }
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault(); // 기본 제출 이벤트 방지
+    handleLogin(); // 로그인 핸들러 호출
+  };
+
+  const goToSignUpPage = () => {
+    navigate('/signup');
+  };
+
   return (
     <div className="Login">
       <h2>로그인</h2>
-      <form>
+      <form onSubmit={handleSubmit}>
         <div className="input-container">
           <div className="input-row">
             <label htmlFor="login-username">아이디:</label>
@@ -72,8 +81,11 @@ function Login() {
             />
           </div>
         </div>
-        <button type="button" onClick={handleLogin}>
+        <button type="submit">
           로그인
+        </button>
+        <button type="button" onClick={goToSignUpPage}>
+          회원가입
         </button>
       </form>
       <KakaoLoginButton />

@@ -15,7 +15,9 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
+    sessionStorage.removeItem('token');
     setIsLoggedIn(false);
+    navigate("/");
   };
 
   const kakaoLogout = async () => {
@@ -32,7 +34,6 @@ export const AuthProvider = ({ children }) => {
   
       if (response.ok) {
         console.log('카카오 로그아웃 성공');
-        sessionStorage.removeItem('accesstoken');
         logout();
         navigate('/');
       } else {
