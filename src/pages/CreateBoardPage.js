@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {API_BASE_URL as BASE, CboardBoard} from '../config/host-config'
+import '../styles/CreateBoardPage.scss';
 
 const CreateBoardPage = () => {
 
