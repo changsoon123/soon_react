@@ -15,11 +15,15 @@ const CreateBoardPage = () => {
     e.preventDefault();
 
     try {
+
+        const token = sessionStorage.getItem('token');
+
         // 서버에 새로운 게시물 생성 요청
         await fetch( API_BASE_URL , {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
           },
           body: JSON.stringify({
             title,

@@ -1,21 +1,21 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { API_BASE_URL as BASE, CboardBoard } from '../config/host-config';
+import { API_BASE_URL as BASE, CboardBoards } from '../config/host-config';
 import '../styles/BoardPage.scss';
 
 const BoardPage = () => {
-  const API_BASE_URL = BASE + CboardBoard;
+  const API_BASE_URL = BASE + CboardBoards;
   const [boards, setBoards] = useState([]);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
-  const [reachedEnd, setReachedEnd] = useState(false); // 추가: 데이터의 끝에 도달했는지 여부를 나타내는 상태
+  const [reachedEnd, setReachedEnd] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = sessionStorage.getItem('token'); // 로컬 스토리지에서 JWT 토큰 가져오기
+    const token = sessionStorage.getItem('token');
     if (token) {
-      setIsLoggedIn(true); // JWT 토큰이 있는 경우 로그인 상태로 설정
+      setIsLoggedIn(true);
     }
   }, []);
 
@@ -23,8 +23,7 @@ const BoardPage = () => {
     if (!isLoggedIn) {
       alert("로그인 한 사용자만 가능합니다!");
       navigate('/login');
-    }else {
-      
+    } else {
       navigate('/create');
     }
   };
@@ -35,11 +34,9 @@ const BoardPage = () => {
       const response = await fetch(`${API_BASE_URL}?page=${page}`);
       const data = await response.json();
       if (data.length === 0 && page === 1) {
-        // 첫 페이지에서 데이터가 없는 경우
-        setBoards([]); // 기존 게시물을 초기화합니다.
+        setBoards([]);
       } else if (data.length === 0 && page > 1) {
-        // 더 이상 데이터가 없는 경우
-        setReachedEnd(true); // 데이터의 끝에 도달했음을 나타냅니다.
+        setReachedEnd(true);
       } else {
         setBoards(prevBoards => [...prevBoards, ...data]);
         setPage(prevPage => prevPage + 1);
@@ -51,26 +48,19 @@ const BoardPage = () => {
     }
   }, [API_BASE_URL, page]);
 
-  const handleScroll = useCallback(() => {
-    if (
-      window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight
-    ) {
-      if (!loading && !reachedEnd) { // 추가: 로딩 중이지 않고 데이터의 끝에 도달하지 않은 경우에만 추가 요청 보냄
-        fetchBoards();
-      }
+  const handleIntersect = useCallback((entries) => {
+    const lastEntry = entries[entries.length - 1];
+    if (lastEntry.isIntersecting && !loading && !reachedEnd) {
+      fetchBoards();
     }
   }, [fetchBoards, loading, reachedEnd]);
 
   useEffect(() => {
-    fetchBoards();
-  }, [fetchBoards]);
-
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, [handleScroll]);
+    const observer = new IntersectionObserver(handleIntersect);
+    const target = document.querySelector('.board-list');
+    observer.observe(target);
+    return () => observer.unobserve(target);
+  }, [handleIntersect]);
 
   return (
     <div className="board-container">
@@ -88,8 +78,7 @@ const BoardPage = () => {
           ))
         )}
         {loading && <p>Loading...</p>}
-        {/* 게시물이 아예 없을 때만 "No boards available" 메시지를 표시합니다 */}
-        {!boards.length === 0 && !loading && !reachedEnd && <p className="no-more-data">더 이상 게시물이 없습니다.</p>}
+        {boards.length !== 0 && !loading && !reachedEnd && <p className="no-more-data">더 이상 게시물이 없습니다.</p>}
       </div>
       <button onClick={handleCreateBoardClick} className="create-board-link">
         게시물 작성
@@ -98,7 +87,6 @@ const BoardPage = () => {
   );
 };
 
-// 게시물이 없는 경우에 사용할 수 있는 컴포넌트
 const BlankBoardItem = () => (
   <div className="blank-board-container">
     <div className="board-item">
