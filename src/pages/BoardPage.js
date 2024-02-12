@@ -33,10 +33,12 @@ const BoardPage = () => {
     try {
       const response = await fetch(`${API_BASE_URL}?page=${page}`);
       const data = await response.json();
-      if (data.length === 0 && page === 1) {
-        setBoards([]);
-      } else if (data.length === 0 && page > 1) {
-        setReachedEnd(true);
+      if (data.length === 0) {
+        if (page === 1) {
+          setBoards([]);
+        } else {
+          setReachedEnd(true);
+        }
       } else {
         setBoards(prevBoards => [...prevBoards, ...data]);
         setPage(prevPage => prevPage + 1);
@@ -47,20 +49,24 @@ const BoardPage = () => {
       setLoading(false);
     }
   }, [API_BASE_URL, page]);
-
-  const handleIntersect = useCallback((entries) => {
-    const lastEntry = entries[entries.length - 1];
-    if (lastEntry.isIntersecting && !loading && !reachedEnd) {
-      fetchBoards();
-    }
-  }, [fetchBoards, loading, reachedEnd]);
-
+  
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
+    const handleIntersect = (entries) => {
+      const lastEntry = entries[entries.length - 1];
+      if (lastEntry.isIntersecting && !loading && !reachedEnd) {
+        fetchBoards(page);
+      }
+    };
+  
     const observer = new IntersectionObserver(handleIntersect);
     const target = document.querySelector('.board-list');
     observer.observe(target);
-    return () => observer.unobserve(target);
-  }, [handleIntersect]);
+  
+    return () => {
+      observer.disconnect(); // Intersection Observer 해제
+    };
+  }, [fetchBoards, loading, page, reachedEnd]);
 
   return (
     <div className="board-container">
