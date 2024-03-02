@@ -20,7 +20,7 @@
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
       border-radius: 8px;
       padding: 20px;
-      
+
       h2 {
         font-size: 20px;
         margin-bottom: 10px;
@@ -37,38 +37,41 @@
     }
   }
 
-  .no-more-data {
+  .create-board-link {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+    font-size: 18px;
+    color: #ffffff;
+    margin-bottom: 20px;
+    background-color: #007bff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+
+    /* 버튼에 호버 효과 추가 */
+    &:hover {
+      background-color: #0056b3;
+    }
+
+    /* 버튼에 액티브(클릭) 효과 추가 */
+    &:active {
+      background-color: #0056b3;
+    }
+  }
+
+  .empty-board-message {
     font-size: 18px;
     text-align: center;
     color: #555555;
     margin: 20px auto;
   }
 
-  .create-board-link {
-    display: block;
-    text-align: center;
-    margin-top: 20px;
+  .end-of-boards-message {
     font-size: 18px;
-    color: #1877f2;
-    margin-bottom: 20px;
-  }
-
-  .create-board-link {
-    background-color: #007bff; 
-    color: #ffffff; 
-    padding: 10px 20px; 
-    border: none; 
-    border-radius: 5px; 
-    cursor: pointer; 
-  
-    /* 버튼에 호버 효과 추가 */
-    &:hover {
-      background-color: #0056b3; 
-    }
-  
-    /* 버튼에 액티브(클릭) 효과 추가 */
-    &:active {
-      background-color: #0056b3; 
-    }
+    text-align: center;
+    color: #555555;
+    margin: 20px auto;
   }
 }

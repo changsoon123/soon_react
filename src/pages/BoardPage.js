@@ -11,7 +11,7 @@ const BoardPage = () => {
   const [boards, setBoards] = useState([]);
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(0);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
@@ -21,17 +21,19 @@ const BoardPage = () => {
     }
   }, []);
 
-  const fetchData = async (page) => {
+  const fetchData = async (currentPage) => {
+    if (loading) return; // 이미 요청 중이면 중복 요청 방지
+
+    setLoading(true);
+
     try {
-      setLoading(true);
-      const response = await fetch(`${API_BASE_URL}?page=${page}`);
+      const response = await fetch(`${API_BASE_URL}?page=${currentPage}`);
       const data = await response.json();
-      console.log(data);
+      
       if (data.length === 0) {
         setHasMore(false);
       } else {
         setBoards(prevBoards => [...prevBoards, ...data]);
-        setPage(prevPage => prevPage + 1);
       }
     } catch (error) {
       console.error('Error fetching boards:', error);
@@ -41,9 +43,10 @@ const BoardPage = () => {
   };
 
   const loadMore = () => {
-    if (!loading && hasMore) {
-      fetchData(page);
-    }
+    if (!hasMore) return; // 더 이상 데이터가 없으면 추가 요청 방지
+
+    fetchData(page + 1); // 다음 페이지 데이터 요청
+    setPage(prevPage => prevPage + 1); // 페이지 증가
   };
 
   const handleCreateBoardClick = () => {
@@ -67,6 +70,9 @@ const BoardPage = () => {
           useWindow={true}
           threshold={20}
         >
+          {boards.length === 0 && !loading &&  (
+            <p className="empty-board-message">게시물이 존재하지 않습니다. 게시물을 작성해주세요.</p>
+          )}
           {boards.map(board => (
             <div key={board.id} className="board-item">
               <h2>{board.title}</h2>
@@ -74,6 +80,9 @@ const BoardPage = () => {
               <p>작성일: {board.createdAt}</p>
             </div>
           ))}
+          {!hasMore && !boards.length === 0 &&(
+            <p className="end-of-boards-message">더 이상 게시물이 존재하지 않습니다.</p>
+          )}
         </InfiniteScroll>
       </div>
       <button onClick={handleCreateBoardClick} className="create-board-link">
