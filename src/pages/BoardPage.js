@@ -23,17 +23,25 @@ const BoardPage = () => {
 
   const fetchData = async (currentPage) => {
     if (loading) return; // 이미 요청 중이면 중복 요청 방지
-
+  
     setLoading(true);
-
+  
     try {
       const response = await fetch(`${API_BASE_URL}?page=${currentPage}`);
-      const data = await response.json();
-      
-      if (data.length === 0) {
-        setHasMore(false);
+      const responseData = await response.json();
+      console.log(responseData.content);
+  
+      // 서버에서 전달된 데이터를 확인하고 데이터가 배열 형태인지 확인
+      if (Array.isArray(responseData.content)) {
+        const { content, last, number: pageNumber } = responseData; // 받아온 데이터에서 content(데이터 배열), last(마지막 페이지 여부)를 추출
+        
+        console.log(responseData);
+        
+        setBoards(prevBoards => [...prevBoards, ...content]);
+        setHasMore(!last); // last가 true면 더 이상 데이터가 없는 것으로 간주하여 hasMore를 false로 설정
+        setPage(pageNumber);
       } else {
-        setBoards(prevBoards => [...prevBoards, ...data]);
+        console.error('Error: Invalid data format received from server');
       }
     } catch (error) {
       console.error('Error fetching boards:', error);
@@ -41,12 +49,12 @@ const BoardPage = () => {
       setLoading(false);
     }
   };
+  
 
   const loadMore = () => {
-    if (!hasMore) return; // 더 이상 데이터가 없으면 추가 요청 방지
+    if (!hasMore || loading) return; // 더 이상 데이터가 없으면 추가 요청 방지
 
-    fetchData(page + 1); // 다음 페이지 데이터 요청
-    setPage(prevPage => prevPage + 1); // 페이지 증가
+    fetchData(page); // 다음 페이지 데이터 요청
   };
 
   const handleCreateBoardClick = () => {
@@ -80,7 +88,7 @@ const BoardPage = () => {
               <p>작성일: {board.createdAt}</p>
             </div>
           ))}
-          {!hasMore && !boards.length === 0 &&(
+          {!hasMore && boards.length !== 0 && (
             <p className="end-of-boards-message">더 이상 게시물이 존재하지 않습니다.</p>
           )}
         </InfiniteScroll>
