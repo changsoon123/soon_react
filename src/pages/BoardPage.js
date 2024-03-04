@@ -39,7 +39,7 @@ const BoardPage = () => {
         
         setBoards(prevBoards => [...prevBoards, ...content]);
         setHasMore(!last); // last가 true면 더 이상 데이터가 없는 것으로 간주하여 hasMore를 false로 설정
-        setPage(pageNumber);
+        setPage(pageNumber + 1);
       } else {
         console.error('Error: Invalid data format received from server');
       }
@@ -54,7 +54,7 @@ const BoardPage = () => {
   const loadMore = () => {
     if (!hasMore || loading) return; // 더 이상 데이터가 없으면 추가 요청 방지
 
-    fetchData(page); // 다음 페이지 데이터 요청
+    fetchData(page); 
   };
 
   const handleCreateBoardClick = () => {
@@ -69,8 +69,11 @@ const BoardPage = () => {
   return (
     <div className="board-container">
       <h1>게시판</h1>
+      <button onClick={handleCreateBoardClick} className="create-board-link">
+        게시물 작성
+      </button>
       <div className="board-list">
-        <InfiniteScroll
+      <InfiniteScroll
           pageStart={0}
           loadMore={loadMore}
           hasMore={hasMore}
@@ -79,7 +82,10 @@ const BoardPage = () => {
           threshold={20}
         >
           {boards.length === 0 && !loading &&  (
-            <p className="empty-board-message">게시물이 존재하지 않습니다. 게시물을 작성해주세요.</p>
+            <div className="empty-board-message board-item">
+              <h2>게시물이 존재하지 않습니다.</h2>
+              <p>게시물을 작성해주세요.</p>
+            </div>
           )}
           {boards.map(board => (
             <div key={board.id} className="board-item">
@@ -89,13 +95,15 @@ const BoardPage = () => {
             </div>
           ))}
           {!hasMore && boards.length !== 0 && (
-            <p className="end-of-boards-message">더 이상 게시물이 존재하지 않습니다.</p>
+            <div className="end-of-boards-message board-item">
+              <h2>더 이상 게시물이 존재하지 않습니다.</h2>
+            </div>
           )}
         </InfiniteScroll>
       </div>
-      <button onClick={handleCreateBoardClick} className="create-board-link">
+      {/* <button onClick={handleCreateBoardClick} className="create-board-link">
         게시물 작성
-      </button>
+      </button> */}
     </div>
   );
 };

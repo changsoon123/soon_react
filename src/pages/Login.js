@@ -14,7 +14,6 @@ function Login() {
   const navigate = useNavigate();
 
   const handleLogin = async () => {
-    
     try {
       const response = await fetch(API_BASE_URL , {
         method: 'POST',
@@ -42,6 +41,7 @@ function Login() {
       } else {
         // 로그인 실패
         console.log('로그인 실패');
+        alert('로그인에 실패했습니다!');
       }
     } catch (error) {
       console.error('로그인 요청 에러', error);
@@ -50,7 +50,22 @@ function Login() {
 
   const handleSubmit = (e) => {
     e.preventDefault(); // 기본 제출 이벤트 방지
-    handleLogin(); // 로그인 핸들러 호출
+    
+    // 입력값이 없을 때 에러 메시지 표시
+    if (!username) {
+      alert('아이디를 입력해주세요!');
+      return;
+    } 
+
+    if (!password) {
+      alert('비밀번호를 입력해주세요!');
+      return;
+    } 
+
+    // 입력값이 모두 채워졌을 때 로그인 시도
+    if (username && password) {
+      handleLogin();
+    }
   };
 
   const goToSignUpPage = () => {
@@ -68,8 +83,9 @@ function Login() {
               type="text"
               id="login-username"
               value={username}
-              onChange={(e) => setUsername(e.target.value)}      
+              onChange={(e) => setUsername(e.target.value)}
             />
+            
           </div>
           <div className="input-row">
             <label htmlFor="login-password">비밀번호:</label>
@@ -79,6 +95,7 @@ function Login() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
+            
           </div>
         </div>
         <button type="submit">
