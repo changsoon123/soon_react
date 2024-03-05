@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { API_BASE_URL as BASE, CboardBoards } from '../config/host-config';
 import InfiniteScroll from 'react-infinite-scroller';
 import '../styles/BoardPage.scss';
@@ -88,11 +88,13 @@ const BoardPage = () => {
             </div>
           )}
           {boards.map(board => (
-            <div key={board.id} className="board-item">
+            <Link key={board.id} to={`/board/${board.id}`} className="board-item-link">
+            <div className="board-item">
               <h2>{board.title}</h2>
               <p>{board.content}</p>
               <p>작성일: {board.createdAt}</p>
             </div>
+            </Link>
           ))}
           {!hasMore && boards.length !== 0 && (
             <div className="end-of-boards-message board-item">

@@ -39,7 +39,7 @@ const CreateBoardPage = () => {
   };
 
   return (
-    <div>
+    <div className="container">
       <h1>게시물 작성</h1>
       <form onSubmit={handleSubmit}>
         <label>
