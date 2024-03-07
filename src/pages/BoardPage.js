@@ -92,7 +92,7 @@ const BoardPage = () => {
             <div className="board-item">
               <h2>{board.title}</h2>
               <p>{board.content}</p>
-              <p>작성일: {board.createdAt}</p>
+              <p>작성일: {new Date(board.createdAt).toLocaleString()}</p>
             </div>
             </Link>
           ))}

@@ -15,6 +15,10 @@
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     grid-gap: 20px;
 
+    .board-item-link {
+      text-decoration: none; 
+    }
+
     .board-item {
       background-color: #ffffff;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -22,6 +26,10 @@
       padding: 20px;
       margin-bottom: 30px;
       border: 1px solid rgba(0, 0, 0, 0.1);
+
+      &:hover {
+        transform: scale(1.05); 
+      }
 
       h2 {
         font-size: 20px;
@@ -63,17 +71,17 @@
     }
   }
 
-  // .empty-board-message {
-  //   font-size: 18px;
-  //   text-align: center;
-  //   color: #555555;
-  //   margin: 20px auto;
-  // }
+  /* .empty-board-message {
+     font-size: 18px;
+     text-align: center;
+     color: #555555;
+     margin: 20px auto;
+   }
 
-  // .end-of-boards-message {
-  //   font-size: 18px;
-  //   text-align: center;
-  //   color: #555555;
-  //   margin: 20px auto;
-  // }
+   .end-of-boards-message {
+     font-size: 18px;
+     text-align: center;
+     color: #555555;
+     margin: 20px auto;
+   } */
 }
