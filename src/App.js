@@ -9,6 +9,7 @@ import BoardDetailPage from './pages/BoardDetailPage';
 import SignUp from './pages/SignUp';
 import Login from './pages/Login';
 import CreateBoardPage from './pages/CreateBoardPage';
+import EditBoardPage from './pages/EditBoardPage';
 import './App.scss';
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<Login />} />
         <Route path="/create" element={<CreateBoardPage />} />
+        <Route path="/edit/:id" element={<EditBoardPage />} />
       </Routes>
       </AuthProvider>
     </Router>
