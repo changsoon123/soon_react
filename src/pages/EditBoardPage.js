@@ -28,7 +28,7 @@ const EditBoardPage = () => {
     event.preventDefault();
     const token = sessionStorage.getItem('token');
     try {
-      const response = await fetch(`${API_BASE_URL}/edit/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -65,7 +65,7 @@ const EditBoardPage = () => {
             onChange={(e) => setContent(e.target.value)}
           />
         </div>
-        <button type="submit">Save</button>
+        <button type="submit">수정 완료</button>
       </form>
     </div>
   );
