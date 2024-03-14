@@ -58,7 +58,7 @@ const BoardDetailPage = () => {
           title: '삭제 성공',
           text: '게시물이 성공적으로 삭제되었습니다.'
         }).then(() => {
-          navigate('/board'); // 삭제 후 홈 페이지로 이동하거나 다른 페이지로 리다이렉트
+          navigate('/board'); 
         });
       } else {
         console.error('Error deleting board');

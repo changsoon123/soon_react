@@ -22,7 +22,7 @@ const BoardPage = () => {
   }, []);
 
   const fetchData = async (currentPage) => {
-    if (loading) return; // 이미 요청 중이면 중복 요청 방지
+    if (loading) return; 
   
     setLoading(true);
   
@@ -31,14 +31,14 @@ const BoardPage = () => {
       const responseData = await response.json();
       console.log(responseData.content);
   
-      // 서버에서 전달된 데이터를 확인하고 데이터가 배열 형태인지 확인
+      
       if (Array.isArray(responseData.content)) {
-        const { content, last, number: pageNumber } = responseData; // 받아온 데이터에서 content(데이터 배열), last(마지막 페이지 여부)를 추출
+        const { content, last, number: pageNumber } = responseData; 
         
         console.log(responseData);
         
         setBoards(prevBoards => [...prevBoards, ...content]);
-        setHasMore(!last); // last가 true면 더 이상 데이터가 없는 것으로 간주하여 hasMore를 false로 설정
+        setHasMore(!last); 
         setPage(pageNumber + 1);
       } else {
         console.error('Error: Invalid data format received from server');
@@ -52,7 +52,7 @@ const BoardPage = () => {
   
 
   const loadMore = () => {
-    if (!hasMore || loading) return; // 더 이상 데이터가 없으면 추가 요청 방지
+    if (!hasMore || loading) return; 
 
     fetchData(page); 
   };
