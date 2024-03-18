@@ -9,10 +9,18 @@ const CreateBoardPage = () => {
 
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [files, setFiles] = useState([]); // 파일 상태 초기화 추가
+  const [uploadedFiles, setUploadedFiles] = useState([]);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // 제목 또는 내용이 비어있는 경우 알림 표시
+    if (!title.trim() || !content.trim()) {
+      alert('제목과 내용을 입력하세요.');
+      return;
+    }
 
     try {
       const token = sessionStorage.getItem('token');
@@ -20,11 +28,15 @@ const CreateBoardPage = () => {
       const formData = new FormData();
       formData.append('title', title);
       formData.append('content', content);
+      files.forEach((file) => {
+        formData.append('file', file);
+      });
 
-      // 이미지를 FormData에 추가하지 않고 업로드
+      // 게시물 생성 요청
       await fetch(API_BASE_URL, {
         method: 'POST',
         headers: {
+          
           Authorization: `Bearer ${token}`,
         },
         body: formData,
@@ -38,10 +50,14 @@ const CreateBoardPage = () => {
 
   // React Dropzone 설정
   const { getRootProps, getInputProps } = useDropzone({
-    accept: 'image/*', // 이미지만 허용
+    accept:  {
+      "image/*": [".jpeg", ".jpg", ".png"],
+    },
+   // 이미지만 허용
     onDrop: (acceptedFiles) => {
       // 파일 선택 시 처리
-      console.log(acceptedFiles);
+      setFiles(acceptedFiles);
+      setUploadedFiles(acceptedFiles);
     },
   });
 
@@ -63,6 +79,14 @@ const CreateBoardPage = () => {
         <div {...getRootProps()} className="dropzone">
           <input {...getInputProps()} />
           <p>사진을 여기에 끌어다 놓거나 클릭하여 업로드하세요.</p>
+        </div>
+         {/* 파일 목록 표시 */}
+         <div className="file-list-container">
+          {uploadedFiles.map((file, index) => (
+            <div key={index} className="file-item">
+              <span>{file.name} - {file.size} bytes</span>
+            </div>
+          ))}
         </div>
         <br />
         <button type="submit">작성 완료</button>
