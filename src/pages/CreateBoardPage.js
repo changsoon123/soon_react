@@ -10,7 +10,6 @@ const CreateBoardPage = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [files, setFiles] = useState([]); // 파일 상태 초기화 추가
-  const [uploadedFiles, setUploadedFiles] = useState([]);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -36,7 +35,6 @@ const CreateBoardPage = () => {
       await fetch(API_BASE_URL, {
         method: 'POST',
         headers: {
-          
           Authorization: `Bearer ${token}`,
         },
         body: formData,
@@ -56,8 +54,7 @@ const CreateBoardPage = () => {
    // 이미지만 허용
     onDrop: (acceptedFiles) => {
       // 파일 선택 시 처리
-      setFiles(acceptedFiles);
-      setUploadedFiles(acceptedFiles);
+      setFiles(prevFiles => [...prevFiles, ...acceptedFiles]);
     },
   });
 
@@ -77,12 +74,12 @@ const CreateBoardPage = () => {
         <br />
         {/* React Dropzone 추가 */}
         <div {...getRootProps()} className="dropzone">
-          <input {...getInputProps()} />
+          <input {...getInputProps()} multiple />
           <p>사진을 여기에 끌어다 놓거나 클릭하여 업로드하세요.</p>
         </div>
          {/* 파일 목록 표시 */}
          <div className="file-list-container">
-          {uploadedFiles.map((file, index) => (
+          {files.map((file, index) => (
             <div key={index} className="file-item">
               <span>{file.name} - {file.size} bytes</span>
             </div>

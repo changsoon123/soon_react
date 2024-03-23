@@ -74,6 +74,11 @@ const BoardDetailPage = () => {
   return (
     <div className="board-detail">
       <h2>{board.title}</h2>
+      <div className="image-container">
+        {board.fileUrls && board.fileUrls.map((url, index) => (
+          <img key={index} src={url} alt={`게시물 사진 ${index}`} />
+        ))}
+      </div>
       <p>{board.content}</p>
       <p>작성자: {board.nickname}</p>
       <div className="button-container">
