@@ -1,52 +1,93 @@
 .edit-board {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-  
-    h2 {
-      font-size: 24px;
-      margin-bottom: 20px;
-      color: #333; 
-    }
-  
-    form {
-      display: grid;
-      grid-gap: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
 
-      .label {
-        display: block;
-        text-align: left; 
-        margin-bottom: 5px; 
-        color: #555; 
-      }
-  
-      label {
-        font-weight: bold;
-        color: #555; 
-      }
-  
-      input,
-      textarea {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        font-size: 16px;
-      }
-  
-      button[type="submit"] {
-        padding: 10px 20px;
-        background-color: #007bff;
-        color: #fff;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 16px;
-        transition: background-color 0.3s ease;
-  
-        &:hover {
-          background-color: #0056b3; /* 버튼 호버 색상 설정 */
-        }
+  h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+  }
+
+  form {
+    display: grid;
+    grid-gap: 20px;
+
+    .label {
+      display: block;
+      text-align: left;
+      margin-bottom: 5px;
+      color: #555;
+    }
+
+    label {
+      font-weight: bold;
+      color: #555;
+    }
+
+    input,
+    textarea {
+      width: 95%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+
+    button[type="submit"] {
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+
+      &:hover {
+        background-color: #0056b3;
       }
     }
   }
+
+  .dropzone {
+    border: 2px dashed #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.3s ease;
+
+    &:hover {
+      border-color: #007bff;
+    }
+
+    p {
+      margin-top: 10px;
+      font-size: 16px;
+      color: #555;
+    }
+  }
+
+
+  .file-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .file-item button {
+    padding: 5px 10px;
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  
+    &:hover {
+      background-color: #c82333; /* 버튼 호버 색상 설정 */
+    }
+  }
+
+}
