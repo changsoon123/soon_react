@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { API_BASE_URL as BASE, CboardBoard } from '../config/host-config';
 import '../styles/BoardDetailPage.scss';
+import CommentList from '../components/CommentList.js';
 import Swal from 'sweetalert2';
 
 const BoardDetailPage = () => {
@@ -85,6 +86,7 @@ const BoardDetailPage = () => {
         <button onClick={handleEditClick}>수정</button>
         <button onClick={handleDeleteClick}>삭제</button>
       </div>
+      <CommentList />
     </div>
   );
 };
