@@ -1,26 +1,65 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useParams } from 'react-router-dom';
 import '../styles/CommentList.scss';
+import { API_BASE_URL as BASE, Comments } from '../config/host-config';
 
 function CommentList() {
+    const API_BASE_URL = BASE + Comments;
+    const { id } = useParams();
     const [comments, setComments] = useState([]);
+    const [newComment, setNewComment] = useState('');
 
     useEffect(() => {
-        axios.get('/api/comments')
-            .then(response => {
+        const fetchComments = async () => {
+            try {
+                const token = sessionStorage.getItem('token');
+                const response = await axios.get(`${API_BASE_URL}/${id}`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
                 setComments(response.data);
-            })
-            .catch(error => {
+            } catch (error) {
                 console.error('Error fetching comments:', error);
+            }
+        };
+    
+        fetchComments();
+    }, [API_BASE_URL, id]);
+
+    const handleCommentChange = (event) => {
+        setNewComment(event.target.value);
+    };
+
+    const handleCommentSubmit = async () => {
+        try {
+            const token = sessionStorage.getItem('token'); 
+            const response = await axios.post(`${API_BASE_URL}/add/${id}`, {
+                content: newComment,
+            }, {
+                headers: {
+                    Authorization: `Bearer ${token}` 
+                }
             });
-    }, []);
+            setComments([...comments, response.data]);
+            setNewComment('');
+        } catch (error) {
+            console.error('Error adding comment:', error);
+        }
+    };
 
     return (
-        <div>
-            <h2>Comments</h2>
-            <ul>
+        <div className="comment-container">
+            <h2>댓글</h2>
+            <textarea className="comment-textarea" value={newComment} onChange={handleCommentChange}></textarea>
+            <button className="comment-button" onClick={handleCommentSubmit}>댓글 추가하기</button>
+            <ul className="comment-list">
                 {comments.map(comment => (
-                    <li key={comment.id}>{comment.content} - {comment.author}</li>
+                    <li className="comment-item" key={comment.id}>
+                        <div className="comment-item-content">{comment.content}</div>
+                        <div className="comment-item-author">작성자: {comment.author}</div>
+                    </li>
                 ))}
             </ul>
         </div>
