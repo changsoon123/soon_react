@@ -1,38 +1,45 @@
 .comment-container {
-    margin-top: 20px;
-  }
-  
-  .comment-textarea {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-  }
-  
-  .comment-button {
-    padding: 8px 16px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    border-radius: 4px;
-  }
-  
-  .comment-list {
-    list-style-type: none;
-    padding: 0;
-  }
-  
-  .comment-item {
-    margin-bottom: 10px;
-    padding: 10px;
-    background-color: #f4f4f4;
-    border-radius: 4px;
-  }
-  
-  .comment-item-content {
-    margin-bottom: 5px;
-  }
-  
-  .comment-item-author {
-    font-style: italic;
-  }
+  margin-top: 20px;
+}
+
+.comment-textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.comment-button {
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.comment-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.comment-item {
+  margin-bottom: 10px;
+  padding: 10px;
+  background-color: #f4f4f4;
+  border-radius: 4px;
+  display: flex; 
+  align-items: center;
+}
+
+.comment-item-content {
+  flex-grow: 1;
+  text-align: center;
+}
+
+.comment-item-author {
+  font-style: italic;
+}
+
+.comment-item-time {
+  margin-left: auto; 
+}

@@ -42,11 +42,17 @@ function CommentList() {
                     Authorization: `Bearer ${token}` 
                 }
             });
-            setComments([...comments, response.data]);
+            setComments([response.data, ...comments]); // Add the new comment to the beginning of the array
             setNewComment('');
         } catch (error) {
             console.error('Error adding comment:', error);
         }
+    };
+
+    // Function to format the date
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        return date.toLocaleString(); // Format the date as per the browser's locale
     };
 
     return (
@@ -57,8 +63,9 @@ function CommentList() {
             <ul className="comment-list">
                 {comments.map(comment => (
                     <li className="comment-item" key={comment.id}>
+                        <div className="comment-item-author">닉네임: {comment.author}</div>
                         <div className="comment-item-content">{comment.content}</div>
-                        <div className="comment-item-author">작성자: {comment.author}</div>
+                        <div className="comment-item-time"> {formatDate(comment.createdAt)}</div> {}
                     </li>
                 ))}
             </ul>
