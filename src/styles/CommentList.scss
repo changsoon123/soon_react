@@ -6,6 +6,9 @@
   width: 100%;
   padding: 10px;
   margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: none; /* 사용자가 텍스트 영역의 크기를 조절하지 못하도록 함 */
 }
 
 .comment-button {
@@ -15,6 +18,11 @@
   border: none;
   cursor: pointer;
   border-radius: 4px;
+  transition: background-color 0.3s ease; /* 부드러운 배경색 전환을 위한 트랜지션 */
+}
+
+.comment-button:hover {
+  background-color: #0056b3; /* 마우스 호버 시 배경색 변경 */
 }
 
 .comment-list {
@@ -23,23 +31,26 @@
 }
 
 .comment-item {
-  margin-bottom: 10px;
-  padding: 10px;
-  background-color: #f4f4f4;
-  border-radius: 4px;
-  display: flex; 
-  align-items: center;
+  margin-bottom: 20px; 
+  padding: 15px;
+  background-color: #f9f9f9; 
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+  display: flex;
+  align-items: flex-start; 
 }
 
 .comment-item-content {
   flex-grow: 1;
-  text-align: center;
 }
 
 .comment-item-author {
   font-style: italic;
+  color: #666; 
 }
 
 .comment-item-time {
-  margin-left: auto; 
+  margin-left: auto;
+  font-size: 0.8em; 
+  color: #999; 
 }
