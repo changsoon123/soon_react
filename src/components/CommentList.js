@@ -42,7 +42,7 @@ function CommentList() {
                     Authorization: `Bearer ${token}` 
                 }
             });
-            setComments([response.data, ...comments]); // Add the new comment to the beginning of the array
+            setComments([response.data, ...comments]); 
             setNewComment('');
         } catch (error) {
             console.error('Error adding comment:', error);
@@ -52,7 +52,7 @@ function CommentList() {
     // Function to format the date
     const formatDate = (dateString) => {
         const date = new Date(dateString);
-        return date.toLocaleString(); // Format the date as per the browser's locale
+        return date.toLocaleString(); 
     };
 
     return (
