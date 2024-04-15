@@ -49,7 +49,23 @@ function CommentList() {
         }
     };
 
-    // Function to format the date
+    const handleCommentDelete = async (commentId) => {
+        const confirmDelete = window.confirm("삭제하시겠습니까?");
+        if (confirmDelete) {
+            try {
+                const token = sessionStorage.getItem('token');
+                await axios.delete(`${API_BASE_URL}/${commentId}`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+                setComments(comments.filter(comment => comment.id !== commentId));
+            } catch (error) {
+                console.error('Error deleting comment:', error);
+            }
+        }
+    };
+
     const formatDate = (dateString) => {
         const date = new Date(dateString);
         return date.toLocaleString(); 
@@ -58,14 +74,18 @@ function CommentList() {
     return (
         <div className="comment-container">
             <h2>댓글</h2>
-            <textarea className="comment-textarea" value={newComment} onChange={handleCommentChange}></textarea>
+            <textarea className="comment-textarea" value={newComment} onChange={handleCommentChange} maxLength={50}
+                        placeholder={`최대 50자까지 입력 가능합니다.`}></textarea>
             <button className="comment-button" onClick={handleCommentSubmit}>댓글 추가하기</button>
             <ul className="comment-list">
-                {comments.map(comment => (
-                    <li className="comment-item" key={comment.id}>
+            {comments.map(comment => (
+                    <li className={`comment-item ${comment.deleted ? 'deleted' : ''}`} key={comment.id}>
                         <div className="comment-item-author">닉네임: {comment.author}</div>
                         <div className="comment-item-content">{comment.content}</div>
-                        <div className="comment-item-time"> {formatDate(comment.createdAt)}</div> {}
+                        <div className="comment-item-time"> {formatDate(comment.createdAt)}</div>
+                        {!comment.deleted && (
+                            <button className="delete-button" onClick={() => handleCommentDelete(comment.id)}>삭제</button>
+                        )}
                     </li>
                 ))}
             </ul>

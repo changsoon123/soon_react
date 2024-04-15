@@ -8,7 +8,7 @@
   margin-bottom: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  resize: none; /* 사용자가 텍스트 영역의 크기를 조절하지 못하도록 함 */
+  resize: none;
 }
 
 .comment-button {
@@ -18,11 +18,11 @@
   border: none;
   cursor: pointer;
   border-radius: 4px;
-  transition: background-color 0.3s ease; /* 부드러운 배경색 전환을 위한 트랜지션 */
+  transition: background-color 0.3s ease; 
 }
 
 .comment-button:hover {
-  background-color: #0056b3; /* 마우스 호버 시 배경색 변경 */
+  background-color: #0056b3; 
 }
 
 .comment-list {
@@ -41,7 +41,9 @@
 }
 
 .comment-item-content {
+  margin-left: 10px;
   flex-grow: 1;
+  max-width: 60%;
 }
 
 .comment-item-author {
@@ -53,4 +55,23 @@
   margin-left: auto;
   font-size: 0.8em; 
   color: #999; 
+}
+
+.deleted {
+  opacity: 0.5; 
+}
+
+ul.comment-list .comment-item .delete-button {
+  margin-left: 15px;
+  margin-top: -5px;
+  padding: 5px 10px;
+  background-color: #dc3545;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+ul.comment-list .comment-item .delete-button:hover {
+  background-color: #c82333; 
 }
