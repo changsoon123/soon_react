@@ -29,17 +29,17 @@ function Login() {
       if (response.ok) {
         const responseData = await response.json();
 
-        // 서버로부터 받은 토큰을 추출
+        
         const token = responseData.token;
 
         sessionStorage.setItem('token', token);
 
-        // 로그인 성공
+        
         console.log('로그인 성공');
         login();
         navigate('/');
       } else {
-        // 로그인 실패
+        
         console.log('로그인 실패');
         alert('로그인에 실패했습니다!');
       }
@@ -49,9 +49,9 @@ function Login() {
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault(); // 기본 제출 이벤트 방지
+    e.preventDefault(); 
     
-    // 입력값이 없을 때 에러 메시지 표시
+    
     if (!username) {
       alert('아이디를 입력해주세요!');
       return;
@@ -62,7 +62,7 @@ function Login() {
       return;
     } 
 
-    // 입력값이 모두 채워졌을 때 로그인 시도
+    
     if (username && password) {
       handleLogin();
     }

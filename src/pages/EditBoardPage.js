@@ -10,7 +10,7 @@ const EditBoardPage = () => {
   const { id } = useParams();
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  const [files, setFiles] = useState([]); // 기존 파일 정보를 저장하는 상태 변수 추가
+  const [files, setFiles] = useState([]); 
 
   useEffect(() => {
     const fetchBoardById = async () => {
@@ -20,10 +20,10 @@ const EditBoardPage = () => {
         setTitle(responseData.title);
         setContent(responseData.content);
         
-        // 기존 파일 정보 설정
+        
         if (responseData.fileUrls) {
           const existingFiles = responseData.fileUrls.map((url, index) => {
-            // 파일 이름 추출
+            
             const fileName = url.split('_').pop(); 
             
         
@@ -70,13 +70,13 @@ const EditBoardPage = () => {
     }
   };
 
-  // React Dropzone 설정
+ 
   const { getRootProps, getInputProps } = useDropzone({
     accept: {
       "image/*": [".jpeg", ".jpg", ".png"],
     },
     onDrop: (acceptedFiles) => {
-      // 파일 선택 시 처리
+      
       setFiles(prevFiles => [...prevFiles, ...acceptedFiles]);
     },
   });
