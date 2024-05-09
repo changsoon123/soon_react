@@ -82,6 +82,7 @@ const BoardDetailPage = () => {
       </div>
       <p>{board.content}</p>
       <p>작성자: {board.nickname}</p>
+      <p>작성일: {new Date(board.createdAt).toLocaleString()}</p>
       <div className="button-container">
         <button onClick={handleEditClick}>수정</button>
         <button onClick={handleDeleteClick}>삭제</button>
