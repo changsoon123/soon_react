@@ -27,43 +27,71 @@ const BoardDetailPage = () => {
 
   const handleEditClick = async () => {
     const token = sessionStorage.getItem('token');
-    const response = await fetch(`${API_BASE_URL}/check-permission/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
-    const permissionData = await response.json();
-
-    if (permissionData.hasPermission) {
-      console.log("회원 인증 성공!")
-      navigate(`/edit/${id}`);
+    console.log(token)
+    if(!token) {
+      alert("로그인이 필요 합니다!");
+      navigate('/Login');
     } else {
-      alert('해당 게시물을 수정할 수 있는 권한이 없습니다.');
+
+      const response = await fetch(`${API_BASE_URL}/check-permission/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      const permissionData = await response.json();
+
+      if (permissionData.hasPermission) {
+        console.log("회원 인증 성공!")
+        navigate(`/edit/${id}`);
+      } else {
+        alert('해당 게시물을 수정할 수 있는 권한이 없습니다.');
+      }
+
     }
   };
 
   const handleDeleteClick = async () => {
     const isConfirmed = window.confirm('정말로 삭제하시겠습니까?');
+    
+    const token = sessionStorage.getItem('token');
+
 
     if (isConfirmed) {
-      const token = sessionStorage.getItem('token');
-      const response = await fetch(`${API_BASE_URL}/${id}`, {
-        method: 'DELETE',
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-      if (response.ok) {
-        Swal.fire({
-          icon: 'success',
-          title: '삭제 성공',
-          text: '게시물이 성공적으로 삭제되었습니다.'
-        }).then(() => {
-          navigate('/board'); 
-        });
-      } else {
-        console.error('Error deleting board');
-        alert('게시물 삭제 중 오류가 발생했습니다.');
+      if(!token) {
+        alert("로그인이 필요 합니다!");
+        navigate('/Login');
+      } else { 
+          const response = await fetch(`${API_BASE_URL}/check-permission/${id}`, {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          });
+          const permissionData = await response.json();
+      
+          if (permissionData.hasPermission) {
+              console.log("회원 인증 성공!")
+              
+              const responsedelete = await fetch(`${API_BASE_URL}/${id}`, {
+                method: 'DELETE',
+                headers: {
+                  Authorization: `Bearer ${token}`
+                }
+              });
+              if (responsedelete.ok) {
+                Swal.fire({
+                  icon: 'success',
+                  title: '삭제 성공',
+                  text: '게시물이 성공적으로 삭제되었습니다.'
+                }).then(() => {
+                  navigate('/board'); 
+                });
+              } else {
+                console.error('Error deleting board');
+                alert('게시물 삭제 중 오류가 발생했습니다.');
+              }
+          } else {
+            alert('해당 게시물을 삭제할 수 있는 권한이 없습니다.');
+          }
       }
     }
   };
@@ -85,7 +113,7 @@ const BoardDetailPage = () => {
       <p>작성일: {new Date(board.createdAt).toLocaleString()}</p>
       <div className="button-container">
         <button onClick={handleEditClick}>수정</button>
-        <button onClick={handleDeleteClick}>삭제</button>
+        <button className="board-delete-button" onClick={handleDeleteClick}>삭제</button>
       </div>
       <CommentList />
     </div>

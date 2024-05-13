@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import '../styles/CommentList.scss';
 import { API_BASE_URL as BASE, Comments } from '../config/host-config';
 
@@ -9,16 +9,12 @@ function CommentList() {
     const { id } = useParams();
     const [comments, setComments] = useState([]);
     const [newComment, setNewComment] = useState('');
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchComments = async () => {
             try {
-                const token = sessionStorage.getItem('token');
-                const response = await axios.get(`${API_BASE_URL}/${id}`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                });
+                const response = await axios.get(`${API_BASE_URL}/${id}`);
                 setComments(response.data);
             } catch (error) {
                 console.error('Error fetching comments:', error);
@@ -33,39 +29,50 @@ function CommentList() {
     };
 
     const handleCommentSubmit = async () => {
-        try {
-            const token = sessionStorage.getItem('token'); 
-            const response = await axios.post(`${API_BASE_URL}/add/${id}`, {
-                content: newComment,
-            }, {
-                headers: {
-                    Authorization: `Bearer ${token}` 
+        const token = sessionStorage.getItem('token');
+        
+        if(!token) {
+            alert("로그인이 필요 합니다!");
+            navigate('/Login');
+          } else { 
+                try {
+                    const response = await axios.post(`${API_BASE_URL}/add/${id}`, {
+                        content: newComment,
+                    }, {
+                        headers: {
+                            Authorization: `Bearer ${token}` 
+                        }
+                    });
+                    setComments([response.data, ...comments]); 
+                    setNewComment('');
+                } catch (error) {
+                    console.error('Error adding comment:', error);
                 }
-            });
-            setComments([response.data, ...comments]); 
-            setNewComment('');
-        } catch (error) {
-            console.error('Error adding comment:', error);
         }
     };
 
     const handleCommentDelete = async (commentId) => {
         const confirmDelete = window.confirm("삭제하시겠습니까?");
+        const token = sessionStorage.getItem('token');
         if (confirmDelete) {
-            try {
-                const token = sessionStorage.getItem('token');
-                await axios.delete(`${API_BASE_URL}/${commentId}`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                });
-                setComments(comments.filter(comment => comment.id !== commentId));
-            } catch (error) {
-                console.error('Error deleting comment:', error);
+            if(!token) {
+                alert("로그인이 필요 합니다!");
+                navigate('/Login');
+              } else {
+                try {
+                    await axios.delete(`${API_BASE_URL}/${commentId}`, {
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        }
+                    });
+                    setComments(comments.filter(comment => comment.id !== commentId));
+                } catch (error) {
+                    console.error('Error deleting comment:', error);
+                }
             }
         }
     };
-
+    
     const formatDate = (dateString) => {
         const date = new Date(dateString);
         return date.toLocaleString(); 
