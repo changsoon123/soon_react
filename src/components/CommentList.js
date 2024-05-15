@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import '../styles/CommentList.scss';
 import { API_BASE_URL as BASE, Comments } from '../config/host-config';
+import Swal from 'sweetalert2';
 
 function CommentList() {
     const API_BASE_URL = BASE + Comments;
@@ -59,16 +60,38 @@ function CommentList() {
                 alert("로그인이 필요 합니다!");
                 navigate('/Login');
               } else {
-                try {
-                    await axios.delete(`${API_BASE_URL}/${commentId}`, {
+                const response = await fetch(`${API_BASE_URL}/check-permission/${commentId}`, {
+                    headers: {
+                      Authorization: `Bearer ${token}`
+                    }
+                  });
+                  const permissionData = await response.json();
+              
+                  if (permissionData.hasPermission) {
+                      console.log("회원 인증 성공!")
+                      
+                      const responsedelete = await fetch(`${API_BASE_URL}/${commentId}`, {
+                        method: 'DELETE',
                         headers: {
-                            Authorization: `Bearer ${token}`
+                          Authorization: `Bearer ${token}`
                         }
-                    });
-                    setComments(comments.filter(comment => comment.id !== commentId));
-                } catch (error) {
-                    console.error('Error deleting comment:', error);
-                }
+                      });
+                      if (responsedelete.ok) {
+                        Swal.fire({
+                          icon: 'success',
+                          title: '삭제 성공',
+                          text: '댓글이 성공적으로 삭제되었습니다.'
+                        }).then(() => {
+                            setComments(comments.filter(comment => comment.id !== commentId));
+                        });
+                      } else {
+                        console.error('Error deleting board');
+                        alert('댓글 삭제 중 오류가 발생했습니다.');
+                      }
+                  } else {
+                    alert('해당 댓글을 삭제할 수 있는 권한이 없습니다.');
+                  }
+
             }
         }
     };
