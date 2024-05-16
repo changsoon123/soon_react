@@ -12,6 +12,7 @@ if(clientHostName === 'localhost'){ //개발 중
 }
 
 export const API_BASE_URL = backEndHostName;
+export const SOCKET_BASE_URL = 'http://localhost:9092';
 export const TODO = '/api/todos';
 export const USER = '/api/signup';
 export const LoginUser = '/api/login';

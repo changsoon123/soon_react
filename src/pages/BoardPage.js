@@ -3,8 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { API_BASE_URL as BASE, CboardBoards } from '../config/host-config';
 import InfiniteScroll from 'react-infinite-scroller';
 import '../styles/BoardPage.scss';
-import io from 'socket.io-client';
-import ChatWindow from '../components/ChatWindow';
+
 
 
 const BoardPage = () => {
@@ -16,34 +15,14 @@ const BoardPage = () => {
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(0);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [socket, setSocket] = useState(null);
 
   useEffect(() => {
     const token = sessionStorage.getItem('token');
     if (token) {
       setIsLoggedIn(true);
     }
-    const newSocket = io('http://localhost:9092');
-    setSocket(newSocket);
-
-    // 언마운트 시 소켓 연결 해제
-    return () => {
-      // 컴포넌트 언마운트 시 소켓 연결 해제
-      if (newSocket) {
-        newSocket.disconnect();
-      }
-    };
   }, []);
 
-  useEffect(() => {
-    // 새로운 게시물이 추가될 때마다 채팅 메시지 수신
-    if (socket) {
-      socket.on('newMessage', (message) => {
-        console.log('Received new message:', message);
-        // 채팅 메시지 처리
-      });
-    }
-  }, [socket]);
 
   const fetchData = async (currentPage) => {
     if (loading) return; 
@@ -116,6 +95,7 @@ const BoardPage = () => {
             <div className="board-item">
               <h2>{board.title}</h2>
               <p>{board.content}</p>
+              <p>작성자: {board.nickname}</p>
               <p>작성일: {new Date(board.createdAt).toLocaleString()}</p>
             </div>
             </Link>
@@ -127,7 +107,7 @@ const BoardPage = () => {
           )}
         </InfiniteScroll>
       </div>
-      <ChatWindow socket={socket} />
+      
       {/* <button onClick={handleCreateBoardClick} className="create-board-link">
         게시물 작성
       </button> */}
