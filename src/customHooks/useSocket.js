@@ -21,7 +21,7 @@ export const useSocket = (room, username) => {
         messageType: "CLIENT",
       });
     },
-    [socket, room]
+    [socket, room, username]
   );
   useEffect(() => {
     const s = io(SOCKET_BASE_URL, {
@@ -43,7 +43,7 @@ export const useSocket = (room, username) => {
     return () => {
       s.disconnect();
     };
-  }, [room]);
+  }, [room, username]);
 
   return { socketResponse, isConnected, sendData };
 };

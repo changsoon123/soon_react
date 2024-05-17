@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { API_BASE_URL as BASE, CboardBoards } from '../config/host-config';
 import InfiniteScroll from 'react-infinite-scroller';
 import '../styles/BoardPage.scss';
+import '../components/Message'
+
 
 
 
@@ -15,6 +17,7 @@ const BoardPage = () => {
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(0);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  
 
   useEffect(() => {
     const token = sessionStorage.getItem('token');
@@ -111,6 +114,7 @@ const BoardPage = () => {
       {/* <button onClick={handleCreateBoardClick} className="create-board-link">
         게시물 작성
       </button> */}
+      
     </div>
   );
 };
