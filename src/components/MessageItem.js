@@ -1,15 +1,15 @@
-import React, { useState } from "react";
-import { timeStampConverter } from "../util/timeUtils";
+import React from "react";
+import { timeStampConverter } from "../util/timeUtil";
 import "../styles/Message.scss";
 
 export const MessageItem = ({ message, username }) => {
   const type = message.messageType.toLowerCase();
-  const self = message.username == username ? "_self" : "";
+  const self = message.username === username ? "_self" : "";
   const time = timeStampConverter(message.createdDateTime);
 
   return (
     <div className={"message_item_" + type + self}>
-      {type != "server" && self == "" && (
+      {type !== "server" && self === "" && (
         <span className="message_item_username">{message.username}</span>
       )}
       <div className={"message_content_" + type + self}>

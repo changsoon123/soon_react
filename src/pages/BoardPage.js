@@ -3,7 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { API_BASE_URL as BASE, CboardBoards } from '../config/host-config';
 import InfiniteScroll from 'react-infinite-scroller';
 import '../styles/BoardPage.scss';
-import '../components/Message'
+import axios from 'axios';
+import {Message} from '../components/Message';
 
 
 
@@ -17,14 +18,32 @@ const BoardPage = () => {
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(0);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userName, setUserName] = useState("guest")
+  const room = "chat";
   
-
   useEffect(() => {
+    const fetchData = async () => {
     const token = sessionStorage.getItem('token');
     if (token) {
       setIsLoggedIn(true);
+
+      try {
+        const response = await axios.get(`${BASE}/message/userinfo`, {
+          headers: {
+            Authorization: `Bearer ${token}` // 토큰을 헤더에 포함하여 전송
+          }
+        });
+        setUserName(response.data);
+        
+      } catch (error) {
+        console.error('Error fetching user info:', error);
+      }
     }
+
+  }
+  fetchData();
   }, []);
+
 
 
   const fetchData = async (currentPage) => {
@@ -110,7 +129,7 @@ const BoardPage = () => {
           )}
         </InfiniteScroll>
       </div>
-      
+      <Message room={room} username={userName} />
       {/* <button onClick={handleCreateBoardClick} className="create-board-link">
         게시물 작성
       </button> */}

@@ -3,53 +3,59 @@ import { useSocket } from "../customHooks/useSocket";
 import { RiSendPlaneLine, RiSendPlaneFill } from "react-icons/ri";
 import "../styles/Message.scss";
 import { MessageList } from "./MessageList";
-import { timeStampConverter } from "../util/timeUtils";
 import { useFetch } from "../customHooks/useFetch";
 
 export const Message = ({ room, username }) => {
-  const { isConnected, socketResponse, sendData } = useSocket(room, username);
+
+  
+  const {socketResponse, sendData } = useSocket(room, username);
   const [messageInput, setMessageInput] = useState("");
   const [messageList, setMessageList] = useState([]);
 
-  const { responseData, error, loading } = useFetch("/message/" + room);
+  const { responseData } = useFetch("/message/" + room);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const addMessageToList = (val) => {
-    if (val.room == "") return;
+    if (val.room === "") return;
     setMessageList([...messageList, val]);
   };
 
   useEffect(() => {
-    if (responseData != undefined) {
+    if (responseData !== undefined && Array.isArray(responseData) ) {
       setMessageList([...responseData, ...messageList]);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [responseData]);
 
   useEffect(() => {
     console.log("Socket Response: ", socketResponse);
     addMessageToList(socketResponse);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [socketResponse]);
 
   const sendMessage = (e) => {
     e.preventDefault();
-    if (messageInput != "") {
+    if (messageInput !== "") {
       sendData({
         content: messageInput,
       });
-      const time = timeStampConverter(Math.floor(Date.now() / 1000));
+      
       addMessageToList({
         content: messageInput,
         username: username,
-        createdDateTime: time,
+        createdDateTime: new Date(),
         messageType: "CLIENT",
       });
+      
+
       setMessageInput("");
     }
   };
 
   return (
     <div className="message_root_div">
-      <span className="room_name">Room: {room} </span>
-      <span className="user_name">Welcome: {username} </span>
+      <span className="room_name"> {room} </span>
+      <span className="user_name"> {username} 님 반갑습니다 </span>
       <div className="message_component">
         <MessageList username={username} messageList={messageList} />
         <form className="chat-input" onSubmit={(e) => sendMessage(e)}>
@@ -60,7 +66,7 @@ export const Message = ({ room, username }) => {
             placeholder="Type a message"
           />
           <button type="submit">
-            {messageInput == "" ? (
+            {messageInput === "" ? (
               <RiSendPlaneLine size={25} />
             ) : (
               <RiSendPlaneFill color="#2671ff" size={25} />
