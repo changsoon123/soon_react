@@ -19,7 +19,7 @@ const BoardPage = () => {
   const [page, setPage] = useState(0);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userName, setUserName] = useState("guest")
-  const room = "chat";
+  const room = "채팅방";
   
   useEffect(() => {
     const fetchData = async () => {
