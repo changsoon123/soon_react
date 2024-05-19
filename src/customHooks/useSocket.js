@@ -24,22 +24,8 @@ export const useSocket = (room, username) => {
     },
     
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [socket, room]
+    [socket, room, username]
   );
-  // useEffect(() => {
-  //   setSocket(io(SOCKET_BASE_URL, {
-  //     withCredentials: true, // CORS 요청에 자격 증명을 포함
-      
-  //     reconnection: true,
-  //     query: `username=${username}&room=${room}`,
-  //   }));
-  //   console.log(socket);
-  //   socket.on("connect", () => {
-  //     console.log("Connected to server!");
-  //     setConnected(true);
-  //   });
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
 
   useEffect(() => {
     const s = io.connect(SOCKET_BASE_URL, {
@@ -71,7 +57,7 @@ export const useSocket = (room, username) => {
       s.disconnect();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [room, username]);
 
   return { socketResponse, isConnected, sendData };
 };

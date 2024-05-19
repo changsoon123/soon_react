@@ -34,7 +34,7 @@ const BoardPage = () => {
           }
         });
         setUserName(response.data);
-        
+        console.log(response.data);
       } catch (error) {
         console.error('Error fetching user info:', error);
       }
@@ -92,48 +92,52 @@ const BoardPage = () => {
   };
 
   return (
-    <div className="board-container">
-      <h1>게시판</h1>
-      <button onClick={handleCreateBoardClick} className="create-board-link">
-        게시물 작성
-      </button>
-      <div className="board-list">
-      <InfiniteScroll
-          pageStart={0}
-          loadMore={loadMore}
-          hasMore={hasMore}
-          loader={<p key={0}>Loading...</p>}
-          useWindow={true}
-          threshold={20}
-        >
-          {boards.length === 0 && !loading &&  (
-            <div className="empty-board-message board-item">
-              <h2>게시물이 존재하지 않습니다.</h2>
-              <p>게시물을 작성해주세요.</p>
-            </div>
-          )}
-          {boards.map(board => (
-            <Link key={board.id} to={`/board/${board.id}`} className="board-item-link">
-            <div className="board-item">
-              <h2>{board.title}</h2>
-              <p>{board.content}</p>
-              <p>작성자: {board.nickname}</p>
-              <p>작성일: {new Date(board.createdAt).toLocaleString()}</p>
-            </div>
-            </Link>
-          ))}
-          {!hasMore && boards.length !== 0 && (
-            <div className="end-of-boards-message board-item">
-              <h2>더 이상 게시물이 존재하지 않습니다.</h2>
-            </div>
-          )}
-        </InfiniteScroll>
+    <div className="frame-container">
+      <div className="board-container">
+        <h1>게시판</h1>
+        <button onClick={handleCreateBoardClick} className="create-board-link">
+          게시물 작성
+        </button>
+        <div className="board-list">
+        <InfiniteScroll
+            pageStart={0}
+            loadMore={loadMore}
+            hasMore={hasMore}
+            loader={<p key={0}>Loading...</p>}
+            useWindow={true}
+            threshold={20}
+          >
+            {boards.length === 0 && !loading &&  (
+              <div className="empty-board-message board-item">
+                <h2>게시물이 존재하지 않습니다.</h2>
+                <p>게시물을 작성해주세요.</p>
+              </div>
+            )}
+            {boards.map(board => (
+              <Link key={board.id} to={`/board/${board.id}`} className="board-item-link">
+              <div className="board-item">
+                <h2>{board.title}</h2>
+                <p>{board.content}</p>
+                <p>작성자: {board.nickname}</p>
+                <p>작성일: {new Date(board.createdAt).toLocaleString()}</p>
+              </div>
+              </Link>
+            ))}
+            {!hasMore && boards.length !== 0 && (
+              <div className="end-of-boards-message board-item">
+                <h2>더 이상 게시물이 존재하지 않습니다.</h2>
+              </div>
+            )}
+          </InfiniteScroll>
+        </div>
+        {/* <button onClick={handleCreateBoardClick} className="create-board-link">
+          게시물 작성
+        </button> */}
+        
       </div>
-      <Message room={room} username={userName} />
-      {/* <button onClick={handleCreateBoardClick} className="create-board-link">
-        게시물 작성
-      </button> */}
-      
+        <div className="chat-container">
+        <Message room={room} username={userName} />
+        </div>
     </div>
   );
 };
