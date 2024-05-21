@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { API_BASE_URL as BASE, CboardBoard } from '../config/host-config';
 import { useDropzone } from 'react-dropzone'; // React Dropzone 추가
+import Tags from '@yaireo/tagify/dist/react.tagify';
+import '@yaireo/tagify/dist/tagify.css';
 import '../styles/CreateBoardPage.scss';
 
 const CreateBoardPage = () => {
@@ -9,8 +11,13 @@ const CreateBoardPage = () => {
 
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [tags, setTags] = useState([]);
   const [files, setFiles] = useState([]); // 파일 상태 초기화 추가
   const navigate = useNavigate();
+
+  const handleTagChange = (e) => {
+    setTags(e.detail.tagify.value.map(tag => tag.value));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -27,6 +34,7 @@ const CreateBoardPage = () => {
       const formData = new FormData();
       formData.append('title', title);
       formData.append('content', content);
+      formData.append('tags', tags);
       files.forEach((file) => {
         formData.append('file', file);
       });
@@ -60,6 +68,7 @@ const CreateBoardPage = () => {
 
   return (
     <div className="container">
+      <button className="back-button" onClick={() => navigate(-1)}>&#x2190;</button>
       <h1>게시물 작성</h1>
       <form onSubmit={handleSubmit}>
         <label>
@@ -70,6 +79,10 @@ const CreateBoardPage = () => {
         <label>
           내용:
           <textarea value={content} onChange={(e) => setContent(e.target.value)} />
+        </label>
+        <label>
+          태그:
+          <Tags settings={{ duplicates: false }} onChange={handleTagChange} />
         </label>
         <br />
         {/* React Dropzone 추가 */}

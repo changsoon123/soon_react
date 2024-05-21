@@ -102,6 +102,7 @@ const BoardDetailPage = () => {
 
   return (
     <div className="board-detail">
+      <button className="back-button" onClick={() => navigate(-1)}>&#x2190;</button>
       <h2>{board.title}</h2>
       <div className="image-container">
         {board.fileUrls && board.fileUrls.map((url, index) => (
