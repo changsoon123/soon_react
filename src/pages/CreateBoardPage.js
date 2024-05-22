@@ -34,7 +34,16 @@ const CreateBoardPage = () => {
       const formData = new FormData();
       formData.append('title', title);
       formData.append('content', content);
-      formData.append('tags', tags);
+      
+      var json_arr = JSON.stringify(tags);
+      console.log("배열값: "+json_arr)
+      formData.append('tags', json_arr);
+      // for (var i = 0; i < tags.length; i++) {
+      //   formData.append('tags[]', tags[i]);
+      // }
+      
+      
+      
       files.forEach((file) => {
         formData.append('file', file);
       });
