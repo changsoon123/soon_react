@@ -34,30 +34,31 @@ const CreateBoardPage = () => {
       const formData = new FormData();
       formData.append('title', title);
       formData.append('content', content);
-      
-      var json_arr = JSON.stringify(tags);
-      console.log("배열값: "+json_arr)
-      formData.append('tags', json_arr);
-      // for (var i = 0; i < tags.length; i++) {
-      //   formData.append('tags[]', tags[i]);
-      // }
-      
-      
+
+      formData.append('tags', JSON.stringify(tags));
       
       files.forEach((file) => {
         formData.append('file', file);
       });
 
+      
       // 게시물 생성 요청
-      await fetch(API_BASE_URL, {
+      const response = await fetch(API_BASE_URL, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
         },
         body: formData,
       });
-
-      navigate('/board');
+      
+      if (response.ok) {
+        
+        navigate('/board');
+      } else {
+        
+        console.error('Failed to create board:', response.statusText);
+        
+      }
     } catch (error) {
       console.error('Error creating board:', error);
     }

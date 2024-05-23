@@ -63,7 +63,7 @@ export const Message = ({ room, username }) => {
             type="text"
             value={messageInput}
             onChange={(e) => setMessageInput(e.target.value)}
-            placeholder="Type a message"
+            placeholder={"\" # \" 을 누르면 해시태그를 찾을 수 있어요!"}
           />
           <button type="submit">
             {messageInput === "" ? (

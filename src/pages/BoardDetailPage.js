@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { API_BASE_URL as BASE, CboardBoard } from '../config/host-config';
 import '../styles/BoardDetailPage.scss';
+import '../styles/tagifytag.scss';
 import CommentList from '../components/CommentList.js';
 import Swal from 'sweetalert2';
+import '@yaireo/tagify/dist/tagify.css';
 
 const BoardDetailPage = () => {
   const API_BASE_URL = BASE + CboardBoard;
@@ -112,6 +114,11 @@ const BoardDetailPage = () => {
       <p>{board.content}</p>
       <p>작성자: {board.nickname}</p>
       <p>작성일: {new Date(board.createdAt).toLocaleString()}</p>
+      <div className="tag-container">
+        {board.tags && board.tags.map((tag, index) => (
+          <span key={index} className="tag">{`# ${tag.name}`}</span>
+        ))}
+      </div>
       <div className="button-container">
         <button onClick={handleEditClick}>수정</button>
         <button className="board-delete-button" onClick={handleDeleteClick}>삭제</button>
